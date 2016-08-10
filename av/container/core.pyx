@@ -105,7 +105,8 @@ cdef class ContainerProxy(object):
         self.file = container.file
         self.writeable = container.writeable
 
-        cdef char *name = self.name
+        name_bytes = self.name.encode('utf-8')
+        cdef char *name = name_bytes
 
 
         cdef lib.AVOutputFormat *ofmt
