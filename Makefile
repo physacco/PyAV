@@ -3,6 +3,7 @@ CFLAGS ?= "-O0"
 
 FFMPEG_VERSION = 2.7
 
+python = python3
 
 .PHONY: default build cythonize clean clean-all info test fate-suite test-assets docs
 
@@ -10,20 +11,20 @@ default: build
 
 
 build:
-	CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) python setup.py build_ext --inplace --debug
+	CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) $(python) setup.py build_ext --inplace --debug
 
 cythonize:
-	python setup.py cythonize
+	$(python) setup.py cythonize
 
 
 
 wheel: build-mingw32
-	python setup.py bdist_wheel
+	$(python) setup.py bdist_wheel
 
 build-mingw32:
 	# before running, set PKG_CONFIG_PATH to the pkgconfig dir of the ffmpeg build.
 	# set PKG_CONFIG_PATH=D:\dev\3rd\media-autobuild_suite\local32\bin-video\ffmpegSHARED\lib\pkgconfig
-	CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) python setup.py build_ext --inplace -c mingw32
+	CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) $(python) setup.py build_ext --inplace -c mingw32
 	mv *.pyd av
 
 
@@ -33,7 +34,7 @@ fate-suite:
 	rsync -vrltLW rsync://fate-suite.ffmpeg.org/fate-suite/ tests/assets/fate-suite/
 
 test:
-	python setup.py test
+	$(python) setup.py test
 
 
 
